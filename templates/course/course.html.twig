@@ -1,0 +1,130 @@
+{% extends 'base.html.twig' %}
+{% block title %}{{ parent() }}Votre cours{% endblock %}
+
+{% block body %}
+    <main class="container course">
+        <section id="detail">
+            <h2 class="my-5">{{ course.name }}</h2>
+            {# TABS #}
+            <ul class="nav nav-tabs">
+                <li class="nav-item">
+                    <a class="nav-link" data-bs-toggle="tab" href="#profil">Profile</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-bs-toggle="tab" href="#details">Détail</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-bs-toggle="tab"
+                       href="#comments">Commentaires</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-bs-toggle="tab" href="#postcomments">Postez un commentaire</a>
+                </li>
+            </ul>
+            {# Contents #}
+            <div id="myTabContent" class="tab-content my-4">
+                <div class="tab-pane fade show active" id="profil">
+                    <div class="row">
+                        <div class="col-md-5">
+                            <img src="{{ asset('img/sections/') ~ course.image }}" alt="{{ course.name }}">
+                        </div>
+                        <div class="col-md-7">
+                            <h4>Description</h4>
+                            <p>{{ course.smallDescription }}</p>
+                            <h4>Informations</h4>
+                            <p class="description">
+                                Cours créé le {{ course.createdAt|date('d/m/Y') }}<br>
+                                Prix: {{ course.price }}&euro;<br>
+                                Durée: {{ course.duration }} minutes<br>
+                                Catégorie: {{ course.category.name }}<br>
+                                Horaire: {{ course.schedule }}<br>
+                                {% if course.professeur is empty %}
+                                    Professeur : Aucun professeur ne donne ce cours
+                                {% endif %}
+                                Professeur : {{ course.professeur.firstName }} {{ course.professeur.lastName }}
+                                <br>
+                                Niveau:
+                                <button type="button" class="btn btn-secondary btn-sm" data-toggle="tooltip"
+                                        data-placement="bottom" title="{{ course.level.prerequisite }}">
+                                    {{ course.level.name }}
+                                </button>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="details">
+                    <h4>Description complète</h4>
+                    <p>{{ course.fullDescription|raw }}</p>
+                    <p><a href="{{ asset('img/pdf/') ~ course.program }}" class="btn btn-primary">Télécharger le
+                            programme</a></p>
+                </div>
+                <div class="tab-pane fade" id="comments">
+                    {% if course.comments|length == 0 %}
+                        <h4>Aucun commentaires pour ce cours</h4>
+                    {% else %}
+                        {% if course.comments|length >= 1 %}
+                            <h4>Nombre de commentaire: <span
+                                        class="badge bg-secondary">{{ course.comments|length }}</span>
+                            </h4>
+                        {% endif %}
+                        <hr>
+                        {% if course.comments|length < 2 %}
+                            <h4>Moyenne des évaluations</h4>
+                            <p>il n'y a pas suffisamment de commentaires postés (au moins deux sont nécessaires)</p>
+                        {% else %}
+                            {# Note moyenne #}
+                            <h4>Moyenne des évaluations :
+                                {% include 'partials/moyenne.html.twig' %}
+                            </h4>
+                        {% endif %}
+                        <hr>
+                        {% for comment in course.comments %}
+                            {% if comment.isPublished == 1 %}
+                                <h6><img src="{{ asset('img/avatar/') ~ comment.author.image }}" class="avatar-mini"
+                                         alt="">
+                                    {{ comment.author.firstName }} {{ comment.author.lastName }}</h6>
+                                <h5>{{ comment.title|capitalize }}</h5>
+                                <p>"{{ comment.comment }}"</p>
+                                <h6 class="text-muted">Ajouté le {{ comment.createdAt|date('d/m/Y') }} &nbsp;&nbsp;<br>
+                                    {# notation par étoiles #}
+                                    Sa note :
+                                    {% include 'partials/rating.html.twig' %}
+                                </h6>
+                                <hr>
+                            {% else %}
+                                <h6><img src="{{ asset('img/avatar/') ~ comment.author.image }}" class="avatar-mini"
+                                         alt="">
+                                    {{ comment.author.firstName }} {{ comment.author.lastName }}</h6>
+                                <p class="text-info">Son commentaire a été masqué par un admnistrateur</p>
+                                <hr>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                </div>
+                <div class="tab-pane fade" id="postcomments">
+                    <div class="row">
+                        <div class="col-md-6 offset-3">
+                            {% if is_granted('ROLE_USER') %}
+                                {# degré de maitrise (un utilisateur ne peut poster qu'un seul commentaire par cours #}
+                                {% if course.authorcomment(app.user) != null %}
+                                    <h4>Vous avez déjà posté un commentaire pour ce cours</h4>
+                                {% else %}
+                                    {{ form_start(form) }}
+                                    {{ form_widget(form) }}
+                                    <button type="submit" class="btn btn-secondary form-control">Poster</button>
+                                    {{ form_end(form) }}
+                                {% endif %}
+                            {% else %}
+                                <h4>Vous devez être connecté</h4>
+                                <p>&nbsp;</p>
+                                <a href="{{ path('login') }}" class="btn btn-outline-primary">Login</a> <a
+                                    href="{{ path('app_register') }}"
+                                    class="btn btn-outline-primary">S'enregistrer</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+{% endblock %}

@@ -1,0 +1,20 @@
+{% apply inline_css %}
+    <style>
+        h1 {
+            color: #3e3f3a;
+            font-size: 1.2rem;
+        }
+
+        p {
+            color: #284a6d;
+        }
+    </style>
+
+    <h1>{{ contact.subject }}</h1>
+
+    <p>De: {{ contact.firstName }} {{ contact.lastName }}</p>
+
+    <p>{{ contact.message }}</p>
+
+
+{% endapply %}

@@ -1,0 +1,64 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ parent() }}Actualités{% endblock %}
+
+{% block body %}
+    <main class="container">
+        <section class="row">
+
+            <!-- Latest news -->
+            <div class="home-news">
+                <h2 class="my-5 text-black-50">Les actualités de ce mois</h2>
+                <div class="col-md-12">
+                    <div class="album py-5 bg-light">
+                        <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 g-2">
+                            {% for newmonth in newsmonths %}
+                                <div class="col">
+                                    <div class="card text-white bg-success mb-3" style="width: 18rem;">
+                                        <img src="{{ asset('img/news/') ~ newmonth.image }}" class="card-img-top"
+                                             alt="newmonth.name">
+                                        <div class="card-body">
+                                            <h5 class="card-title">{{ newmonth.name }}</h5>
+                                        </div>
+                                        <ul class="list-group list-group-flush">
+                                            <p class="card-text" style="padding: 15px;">{{ newmonth.content }}</p>
+                                            <h6 style="padding: 15px;">Actualité datant du <span
+                                                        class="badge bg-secondary">{{ newmonth.createdAt|date('d/m/y') }}</span>
+                                            </h6>
+                                        </ul>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- End Latest news -->
+
+            <div class="col-md-10 offset-1">
+
+                <h2 class="display-4 my-3">Toutes les actualités de l'année</h2>
+                {% for new in news %}
+                    <div class="card mb-4">
+                        <h5 class="card-header">{{ new.name }}</h5>
+                        <div class="card-body row">
+                            <div class="col-2">
+                                <img src="{{ asset('img/news/') ~ new.image }}" alt="{{ new.name }}" class="img-news">
+                            </div>
+                            <div class="col-10">
+                                <h6 class="card-title">{{ new.author.firstName }} {{ new.author.lastName }}</h6>
+                                <p class="card-text">{{ new.content }}</p>
+                            </div>
+                        </div>
+                        <div class="card-footer text-muted">
+                            Actualité datant du : {{ new.createdAt|date('d/m/Y') }}
+                        </div>
+                    </div>
+                {% endfor %}
+                <div class="navigation">
+                    {{ knp_pagination_render(news) }}
+                </div>
+            </div>
+        </section>
+    </main>
+{% endblock %}

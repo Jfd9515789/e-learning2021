@@ -1,0 +1,85 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}{{ parent() }}users{% endblock %}
+
+{% block body %}
+    <h2 class="my-5 text-muted">Gestion des utilisateurs</h2>
+    <table id="table-admin" class="table table-hover">
+        <thead>
+        <tr>
+            <td>Photo</td>
+            <td>Prénom</td>
+            <td>Nom</td>
+            <td>Email</td>
+            <td>Rôles</td>
+            <td>Actions</td>
+            <td>Promotion</td>
+        </tr>
+        </thead>
+        <tbody>
+        {% for user in users %}
+            <tr>
+                <td><img src="{{ asset('img/avatar/') ~ user.image }}" alt="{{ user.firstName }}" class="admin-img">
+                </td>
+                <td>{{ user.firstName }}</td>
+                <td>{{ user.lastName }}</td>
+                <td>{{ user.email }}</td>
+                <td>
+                    {% if user.roles == ['ROLE_USER'] %}
+                        Utilisateur
+                    {% elseif user.roles == ['ROLE_ADMIN'] %}
+                        Administrateur
+                    {% else %}
+                        Super Administrateur
+                    {% endif %}
+                </td>
+                <td>
+                    <a href="{{ path('admin_edit_user', {'id': user.id}) }}" class="btn btn-success"><i
+                                class="icofont-ui-edit"></i></a>&nbsp;
+                    {% if(user.isDisabled) %}
+                        <a href="{{ path('admin_view_user', {'id': user.id}) }}" class="btn btn-info"><i
+                                    class="icofont-eye-open"></i></a>
+                    {% else %}
+                        <a href="{{ path('admin_view_user', {'id': user.id}) }}" class="btn btn-info"><i
+                                    class="icofont-eye-blocked"></i></a>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if user.roles == ['ROLE_USER'] %}
+                        <a href="{{ path('admin_user_promote', {id:user.id, role:"ROLE_ADMIN"}) }}"
+                           class="btn btn-primary">
+                            A
+                        </a>
+                        <a href="{{ path('admin_user_promote', {id:user.id, role:"ROLE_SUPER_ADMIN"}) }}"
+                           class="btn btn-danger">
+                            SA
+                        </a>
+                    {% elseif user.roles == ['ROLE_ADMIN'] %}
+                        <a href="{{ path('admin_user_promote', {id:user.id, role:"ROLE_USER"}) }}"
+                           class="btn btn-warning">
+                            U
+                        </a>
+                        <a href="{{ path('admin_user_promote', {id:user.id, role:"ROLE_SUPER_ADMIN"}) }}"
+                           class="btn btn-danger">
+                            SA
+                        </a>
+                    {% else %}
+                        <a href="{{ path('admin_user_promote', {id:user.id, role:"ROLE_USER"}) }}"
+                           class="btn btn-warning" data-bs-toggle="tooltip" data-bs-placement="bottom"
+                           title="Role user">
+                            U
+                        </a>
+                        <a href="{{ path('admin_user_promote', {id:user.id, role:"ROLE_ADMIN"}) }}"
+                           class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="bottom"
+                           title="Role administrateur">
+                            A
+                        </a>
+                    {% endif %}
+
+                </td>
+            </tr>
+
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

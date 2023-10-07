@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Page Team{% endblock %}
+
+{% block body %}
+    <main class="container">
+        <div class="container-fluid p-5 bg-primary text-white text-center">
+            <h1>Page Team</h1>
+            <p>Page reprenant l'ensemble des administrateurs et les deux supers administrateurs</p>
+        </div>
+        <div class="album py-5 bg-light">
+            <div class="container">
+                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+                    {% for user in users %}
+                        {% if user.roles|json_encode() == '["ROLE_ADMIN"]' %}
+                            <div class="col">
+                                <div class="card shadow-sm">
+                                    <img src="{{ asset('img/avatar/') ~ user.image }}"
+                                         class="d-placeholder-img card-img-top"
+                                         alt="{{ user.firstName }}">
+                                    <div class="card-body">
+                                        <p class="card-title text-uppercase">
+                                            <strong>{{ user.firstName }} {{ user.lastName }}</strong>
+                                        </p>
+                                        <ul class="list-group list-group-flush">
+                                            <li class="list-group-item"><strong>Rôle</strong> : Administrateur</li>
+                                            <li class="list-group-item"><strong>Email</strong> : {{ user.email }}</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                        {% if user.roles|json_encode() == '["ROLE_SUPER_ADMIN"]' %}
+                            <div class="col">
+                                <div class="card shadow-sm">
+                                    <img src="{{ asset('img/avatar/') ~ user.image }}"
+                                         class="d-placeholder-img card-img-top"
+                                         alt="{{ user.firstName }}">
+                                    <div class="card-body">
+                                        <p class="card-title text-uppercase">
+                                            <strong>{{ user.firstName }} {{ user.lastName }}</strong>
+                                        </p>
+                                        <p class="text-uppercase bg-gradient"><span class="badge bg-secondary">Super Administrateur</span></p>
+                                        <ul class="list-group list-group-flush">
+                                            <li class="list-group-item"><strong>Rôle</strong> : Super administrateur
+                                            </li>
+                                            <li class="list-group-item"><strong>Email</strong> : {{ user.email }}</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock %}

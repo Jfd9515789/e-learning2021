@@ -1,0 +1,6 @@
+Pour base de données, deux possibilités :
+
+-Soit charger les fixtures (mais il faudra modifié la date des news pour pouvoir les filtrer car avec les fixtures elles ont toutes la même date)
+
+-Soit importer la base de donnée dans le dossier "base de données", dans laquelle j'ai déjà mis quatre news
+au mois de décembre et toutes les autres les autres mois.

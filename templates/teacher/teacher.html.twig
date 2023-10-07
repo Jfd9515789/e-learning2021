@@ -1,0 +1,61 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Page Teacher{% endblock %}
+
+{% block body %}
+    <main class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="album py-5 bg-light">
+                    <div class="container">
+                        <table class="table" id="table-admin">
+                            <thead>
+                            <tr>
+                                <th>Photo</th>
+                                <th>Nom</th>
+                                <th>Prénom</th>
+                                <th>Leurs cours</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for professeur in professeurs %}
+                                <tr>
+                                    <td><img src="{{ asset('img/avatar/' ~ professeur.image) }}" class="img-fluid"
+                                             alt="{{ professeur.firstName }}"></td>
+                                    <td>{{ professeur.firstName }}</td>
+                                    <td>{{ professeur.lastName }}</td>
+                                    <td>
+                                        <ul>
+                                            {% if professeur.courses is empty %}
+                                                <p class="text-info">Ce professeur ne donne pas de
+                                                    cours</p>
+                                            {% else %}
+                                                <p>
+                                                    <button class="btn btn-primary" type="button"
+                                                            data-bs-toggle="collapse"
+                                                            data-bs-target="#collapseWidthExample" aria-expanded="false"
+                                                            aria-controls="collapseWidthExample">
+                                                        Cliquez pour voir ses cours
+                                                    </button>
+                                                <div style="min-height: 120px;">
+                                                    <div class="collapse collapse-horizontal" id="collapseWidthExample">
+                                                        <div class="card card-body" style="width: 300px;">
+                                                            {% for course in professeur.courses %}
+                                                                <li>{{ course.name }}</li>
+                                                            {% endfor %}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            {% endif %}
+                                        </ul>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock %}

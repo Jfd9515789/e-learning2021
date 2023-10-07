@@ -1,0 +1,15 @@
+/* Menu */
+.accordion-item i {
+    padding-right: 10px;
+}
+
+/* Courses */
+.admin-img {
+    width: 50px;
+}
+
+table a {
+    padding-right: 4px;
+    text-decoration: none;
+    font-size: 1.2rem;
+}

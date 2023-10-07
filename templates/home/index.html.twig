@@ -1,0 +1,130 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ parent() }} Page Home{% endblock %}
+
+{% block body %}
+
+    <!-- Slider -->
+    <div id="carouselExampleSlidesOnly" class="carousel slide carousel-fade" data-bs-ride="carousel">
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img src="{{ asset('img/slider/slider01.jpg') }}" class="d-block w-100" alt="...">
+            </div>
+            <div class="carousel-item">
+                <img src="{{ asset('img/slider/slider02.jpg') }}" class="d-block w-100" alt="...">
+            </div>
+            <div class="carousel-item">
+                <img src="{{ asset('img/slider/slider03.jpg') }}" class="d-block w-100" alt="...">
+            </div>
+        </div>
+    </div>
+    <!-- End Slider -->
+
+    <main class="container">
+        <section class="home-courses">
+            <h2 class="my-5 text-black-50">Nos trois dernières formations</h2>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="album py-5 bg-light">
+                        <div class="row row-cols-3 row-cols-sm-2 row-cols-md-3 g-3">
+                            {% for course in courses|slice(0, 3) %}
+                                <div class="col">
+                                    <div class="card text-white bg-dark mb-3" style="width: 18rem;">
+                                        <img src="{{ asset('img/sections/') ~ course.image }}" class="card-img-top"
+                                             alt="{{ course.name }}">
+                                        <div class="card-body">
+                                            <h5 class="card-title">{{ course.name }}</h5>
+                                            <p class="card-text">{{ course.smallDescription }}</p>
+                                        </div>
+                                        <ul class="list-group list-group-flush">
+                                            <p class="card-text" style="padding: 15px;"><strong>Publié le
+                                                    {{ course.createdAt|date('d/m/Y') }}</strong></p>
+                                            <a class="btn btn-primary" style="padding: 12px;"
+                                               href="{{ path('course', {'slug': course.slug}) }}">Voir ce cours</a>
+                                        </ul>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- End Latest courses -->
+
+        <!-- Latest news -->
+        <div class="home-news">
+            <h2 class="my-5 text-black-50">Nos quatres dernières actualités</h2>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="album py-5 bg-light">
+                        <div class="row row-cols-3 row-cols-sm-2 row-cols-md-4 g-4">
+                            {% for new in news|slice(0, 4) %}
+                                <div class="col">
+                                    <div class="card text-white bg-dark mb-3" style="width: 18rem;">
+                                        <img src="{{ asset('img/news/') ~ new.image }}" class="img-thumbnail"
+                                             alt="new.name">
+                                        <div class="card-body">
+                                            <h5 class="card-title">{{ new.name }}</h5>
+                                        </div>
+                                        <ul class="list-group list-group-flush">
+                                            <p class="card-text" style="padding: 15px;">
+                                                {{ new.content }}</p>
+                                        </ul>
+                                        <p class="card-text" style="padding: 15px;"><strong>Publié le
+                                                {{ new.createdAt|date('d/m/Y') }}</strong></p>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End Latest news -->
+
+        <!-- Cool Links -->
+        <section>
+            <h2 class="my-5 text-black-50">Informations importantes</h2>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="card border-shadow text-dark mb-3">
+                        <div class="card-header text-center text-primary"><i class="icofont-calendar"></i> HORAIRES
+                        </div>
+                        <div class="card-body">
+                            <h4 class="card-title">Horaires de 2019-2020</h4>
+                            <p class="card-text">Some quick example text to build on the card title and make up the bulk
+                                of the card's content.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="card border-shadow text-dark mb-3">
+                        <div class="card-header text-center text-primary"><i class="icofont-info-square"></i>
+                            INFORMATIONS
+                        </div>
+                        <div class="card-body">
+                            <h4 class="card-title">Scéance d'informations</h4>
+                            <p class="card-text">Some quick example text to build on the card title and make up the bulk
+                                of the card's content.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="card border-shadow text-dark mb-3">
+                        <div class="card-header text-center text-primary"><i class="icofont-ui-edit"></i> INSCRIPTION
+                        </div>
+                        <div class="card-body">
+                            <h4 class="card-title">Documents d'inscription</h4>
+                            <p class="card-text">Some quick example text to build on the card title and make up the bulk
+                                of the card's content.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- End Cool Links -->
+    </main>
+{% endblock %}
